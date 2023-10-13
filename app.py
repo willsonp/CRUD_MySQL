@@ -1,9 +1,18 @@
 from flask import Flask,render_template, request, redirect, url_for, flash
 import MySQLdb.cursors
+from config import config
+# from models.modeluser import ModelUser
+# from models.entities.user import User
+
+# Models
+
+# Entities
+
+
 
 app = Flask(__name__)
 app.secret_key='mysecretkey'
-# Config MySQL DB
+# # Config MySQL DB
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_USER'] = 'root'
@@ -26,6 +35,22 @@ def Index():
     conn.close()
     # print(produtcs)
     return render_template('index.html',products=produtcs)
+
+# @app.route('/login',methods=['POST','GET'])
+# def Login():
+#     if request.method == 'POST':
+#         user = User(0,request.form['username'],request.form['password'])
+#         logged_user = ModelUser.login(conn,user)
+        
+#         if logged_user:
+#             return redirect(url_for('Index'))
+#         else:
+#             flash('Username or Password incorrect','danger')
+
+#         return render_template('auth/login.html')
+#     else:
+#         return render_template('auth/login.html')
+
 
 @app.route('/add_product',methods=['POST','GET'])
 def Add_Product():
@@ -125,4 +150,5 @@ def Delete_Product(id):
 
 # run the App
 if __name__ == '__main__':
+    # app.config.from_object(config['development'])
     app.run(port=3000,debug=True)
