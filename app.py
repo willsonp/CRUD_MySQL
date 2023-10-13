@@ -1,6 +1,6 @@
 from flask import Flask,render_template, request, redirect, url_for, flash
 import MySQLdb.cursors
-from config import config
+# from config import config
 # from models.modeluser import ModelUser
 # from models.entities.user import User
 
@@ -12,7 +12,7 @@ from config import config
 
 app = Flask(__name__)
 app.secret_key='mysecretkey'
-# # Config MySQL DB
+# Config MySQL DB
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_USER'] = 'root'
@@ -27,7 +27,7 @@ def Index():
         # Create cursor
     cursor = conn.cursor()
         # pasamos los valres a Select       
-    cursor.execute('SELECT id, descripcion, price, costo FROM productos WHERE status=%s','A')
+    cursor.execute('SELECT id, descripcion, costo, price  FROM productos WHERE status=%s','A')
     produtcs=cursor.fetchall()
         # cerramos cursor 
     cursor.close()
@@ -70,7 +70,7 @@ def Add_Product():
         cursor = conn.cursor()
 
         # pasamos los valres a insertar       
-        cursor.execute('INSERT INTO productos (descripcion,price,costo) VALUES (%s,%s,%s)',(descrip,price,cost))
+        cursor.execute('INSERT INTO productos (descripcion,costo,price) VALUES (%s,%s,%s)',(descrip,cost,price))
         # almacenamos los cambios de manera permanente        
         conn.commit()
         # cerramos cursor 
@@ -91,14 +91,15 @@ def get_productByID(id):
 
     # Create cursor
     cursor = conn.cursor()
-    # pasamos los valres a Select       
-    cursor.execute('SELECT id, descripcion, price, costo FROM productos WHERE id=%s',(id))
+    # pasamos los valres a Select NOTA: el id debe ser una tupla       
+    cursor.execute("SELECT id, descripcion, costo,price FROM productos WHERE id=%s",(id,)) 
+
     produtc_byId=cursor.fetchall()
     # cerramos cursor 
     cursor.close()
-            # close connection
+    # close connection
     conn.close()
-        #  para enviar un mesaje al usuario
+    #  para enviar un mesaje al usuario
     return render_template('edit_product.html',product=produtc_byId[0])
 
 @app.route('/edit_product/<id>',methods=['POST','GET'])
@@ -116,7 +117,7 @@ def Edit_Product(id):
         # Create cursor
         cursor = conn.cursor()
         # pasamos los valres a Select       
-        cursor.execute('UPDATE productos SET descripcion=%s,price=%s,costo=%s WHERE id=%s',(descrip,price,cost,id))
+        cursor.execute('UPDATE productos SET descripcion=%s,costo=%s,price=%s WHERE id=%s',(descrip,cost,price,id))
         # ejecutamos la consulta
         conn.commit()
         # cerramos cursor 
