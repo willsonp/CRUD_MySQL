@@ -1,0 +1,184 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+<title> List Products (PYTHON + MYSQL) </title>
+{% endblock %}
+
+{% block body %}
+<div class="container col-md-aouto p-2 my-2 mr-sm-2">
+
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="jumbotron vertical-center my-2 mr-sm-2 col-md-8">
+                    <div class="page-header">
+                        <h2>Crear Proveedores</h2>
+                        <hr class="my-6">
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="card">
+
+                            <div class="card-body">
+
+                                <form id="nuevoproveedor" name="nuevoproveedor" autocomplete="off" action="#"
+                                    method="post">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <input type="text" name="instruccion" value="insertar" hidden
+                                                class="form-control">
+                                            <label>RNC/Cedula</label>
+                                            <input type="text" name="rnc" id="rnc" maxlength="13" autofocus required=""
+                                                class="form-control">
+                                            <span class="help-block"></span>
+                                        </div>
+
+                                        <div class="form-group col-md-8">
+                                            <label>Nombre</label>
+                                            <input type="text" id="nombre" name="nombre" maxlength="45" required=""
+                                                class="form-control">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label>Direccion</label>
+                                            <input type="text" maxlength="255" name="direccion" id="direccion" required
+                                                class="form-control">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Sector</label>
+                                            <input type="text" name="sector" id="sector" maxlength="20" required
+                                                class="form-control">
+                                            <span class="help-block"></span>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label for="exampleFormControlSelect1">Ciudad</label>
+
+                                            <select class="form-control" name="ciudad" id="ciudad" required>
+
+                                                <option value="" selected disabled>seleccione la Ciudad</option>
+                                                <c:forEach var="c" items="${ciudades}">
+
+                                                    <option value="${c.getIdciudad()}">
+                                                        <c:out value="${c.getNombreciudad()}"></c:out>
+                                                    </option>
+
+                                                </c:forEach>
+
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Correo Electronico</label>
+                                            <input type="email" name="correo" id="correo" maxlength="50"
+                                                class="form-control">
+                                            <span class="help-block"></span>
+                                        </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label>Cuenta Contable</label>
+                                            <input type="text" name="cuentacontable" id="cuentacontable" maxlength="12"
+                                                class="form-control">
+                                            <span class="help-block"></span>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="form-row">
+
+                                        <div class="form-group col-md-12">
+                                            <label>Contacto o representante</label>
+                                            <input type="text" name="contacto" id="contacto" maxlength="45"
+                                                class="form-control">
+                                            <span class="help-block"></span>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label for="inputState">Telefono Tipo</label>
+                                            <select id="tipoloc" name="tipolocalizador" class="form-control">
+                                                <option value="CELULAR">CELULAR</option>
+                                                <option value="HOGAR">HOGAR</option>
+                                                <option value="TRABAJO">TRABAJO</option>
+                                                <option value="FAX">FAX</option>
+
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="inputCity">Numero</label>
+                                            <input type="text" class="form-control" id="numero" maxlength="10"
+                                                name="numerotel">
+                                        </div>
+
+                                        <div class="form-group col-md-4">
+                                            <!--<label for="inputZip">Zip</label>-->
+                                            <!--<input type="hidden" class="form-control" name="instruccion" id="addPhone" value="addPhone">-->
+                                            <br>
+                                            <button type="button" class="btn btn-outline-success" name="btnADD"
+                                                id="btnADD" value="Agregar Otro"><i class="fa fa-plus"></i> &nbsp;
+                                                Agregar</button>
+                                            <!--<a href="#" class="btn btn-outline-success">Agregar Otro</a>-->
+
+                                        </div>
+                                    </div>
+                                    <%-- Informacion agregada--%>
+                                        <h5 class="card-title">Telefonos Agregados</h5>
+
+
+                                        <div style="display: block; overflow-x: auto;overflow-y: auto"
+                                            class="table-responsive-sm">
+
+                                            <table class="table table-hover table-sm" id="telefonos">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Tipo</th>
+                                                        <th scope="col">Numero</th>
+                                                        <th scope="col">Actions</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="detaloc">
+                                                    <tr id="regist_phone">
+
+                                                        <%-- Aqui se agregan los registros--%>
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="form-group col-md-12">
+                                            <br>
+                                            <hr class="my-6">
+                                            <div class="botones">
+                                                <!--<button type="button" id="mostrar"  class="btn btn-outline-success">Mostrar</button>-->
+                                                <button type="button" class="btn btn-primary btn-lg" value="Grabar"
+                                                    name="btnguardar" id="btnguardar"><i class="fa fa-save"></i> &nbsp;
+                                                    Grabar</button>
+                                                <a href="/proveedor_list" class="btn btn-warning btn-lg"><i
+                                                        class="fa fa-home"></i> Volver</a>
+                                            </div>
+                                        </div>
+
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

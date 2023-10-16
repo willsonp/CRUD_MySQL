@@ -36,6 +36,15 @@ def Index():
     # print(produtcs)
     return render_template('index.html',products=produtcs)
 
+@app.route('/proveedor_list')
+def proveedor_list():
+    return render_template('proveedorlist.html')
+
+
+@app.route('/add_proveedor')
+def add_proveedor():
+    return render_template('proveedor.html')
+
 # @app.route('/login',methods=['POST','GET'])
 # def Login():
 #     if request.method == 'POST':
