@@ -57,20 +57,21 @@ def proveedor_list():
 def add_proveedor():
     return render_template('proveedor.html')
 
-# @app.route('/login',methods=['POST','GET'])
-# def Login():
-#     if request.method == 'POST':
-#         user = User(0,request.form['username'],request.form['password'])
-#         logged_user = ModelUser.login(conn,user)
+@app.route('/login',methods=['POST','GET'])
+def Login():
+    if request.method == 'POST':
+        # user = User(0,request.form['username'],request.form['password'])
+        print(request.form['username'],request.form['password'])
+        # logged_user = ModelUser.login(conn,user)
         
-#         if logged_user:
-#             return redirect(url_for('Index'))
-#         else:
-#             flash('Username or Password incorrect','danger')
+        # if logged_user:
+        #     return redirect(url_for('Index'))
+        # else:
+        #     flash('Username or Password incorrect','danger')
 
-#         return render_template('auth/login.html')
-#     else:
-#         return render_template('auth/login.html')
+        return render_template('/auth/login.html')
+    else:
+        return render_template('auth/login.html')
 
 
 @app.route('/add_product',methods=['POST','GET'])
