@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-<title> List Products (PYTHON + MYSQL) </title>
+<title> List Products (S G A SYSTEM) </title>
 {% endblock %}
 
 {% block body %}
@@ -26,7 +26,7 @@
                     </form>
 
                     <form class="form-inline" action="#">
-                        <button name="search" class="btn btn-info my-0 mx-2 btn-lg" type="submit"><i
+                        <button name="search" class="btn btn-outline-info my-0 mx-2 btn-lg" type="submit"><i
                             class="fa fa-search"></i>&nbsp;Buscar</button>
                     </form>
                     <!--<a href="<%=request.getContextPath()%>/Vistas/FrmProveedor.jsp" class="btn btn-success">Agregar</a>-->
@@ -42,7 +42,8 @@
             </div>
             <hr>
             <br>
-            <table class="table table-sm table-bordered table-hover">
+            <table class="table table-striped table-bordered bg-white 
+            table-sm table-hover">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -62,8 +63,22 @@
                         <td>Las Cabuyas, La Vega</td>
                         <td>Juan Fernando</td>
 
+                        <td class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <a class="btn btn-info" href="#"><i class="fa fa-pencil"></i>&nbsp;Editar</a>
+                            &nbsp;
+                            <a class="btn btn-danger" href="#"><i class="fa fa-trash"></i>&nbsp;Borrar</a>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Maria</td>
+                        <td>1030308233</td>
+                        <td>Santiago R.D.</td>
+                        <td>Manuel Mejia</td>
+
                         <td class="text-center">
-                            <a class="btn btn-warning" href="#"><i class="fa fa-pencil"></i>&nbsp;Editar</a>
+                            <a class="btn btn-info" href="#"><i class="fa fa-pencil"></i>&nbsp;Editar</a>
                             &nbsp;
                             <a class="btn btn-danger" href="#"><i class="fa fa-trash"></i>&nbsp;Borrar</a>
                         </td>

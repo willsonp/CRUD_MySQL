@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-<title> List Products (PYTHON + MYSQL) </title>
+<title> List Products (S G A SYSTEM) </title>
 {% endblock %}
 
 {% block body %}
@@ -10,20 +10,7 @@
 <!-- Formulario -->
 <div class="row justify-content-md-center p-4 ">
     <div class="col-md-5 p-4">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-
-        {% for message in messages %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <p>{{ message }}</p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-        {% endfor %}
-
-        {% endif %}
-        {% endwith %}
-
+        
         <div class="card card-body p-4">
             <form action="/add_product" method="POST">
 
@@ -35,13 +22,13 @@
                         placeholder="Enter Product Description">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group col-md-6">
                     <label for="exampleFormControlInput1" class="form-label">Costo</label>
 
                     <input type="text" class="form-control" name="cost" id="cost" placeholder="Enter Product  Cost">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group col-md-6">
                     <label for="exampleFormControlInput1" class="form-label">Precio</label>
 
                     <input type="text" class="form-control" name="price" id="price" placeholder="Enter Product Price">
@@ -50,14 +37,14 @@
 
                 <div class="form-group pt-2 d-grid gap-2 col-3 mx-auto">
                     <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                    <a href="/" class="btn btn-warning btn-sm">Back</a>
+                    <a href="/get_productos" class="btn btn-warning btn-sm">Back</a>
                 </div>
             </form>
         </div>
     </div>
     <!-- Tabla -->
     
-    <div class="col-md-7 p-4">
+    <!-- <div class="col-md-7 p-4">
         <table class="table table-striped table-bordered bg-white table-sm">
             <thead>
                 <tr>
@@ -93,7 +80,7 @@
                 <li class="page-item"><a class="page-link" href="#">Next</a></li>
             </ul>
         </nav>
-    </div>
+    </div> -->
 
 </div>
 

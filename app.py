@@ -25,8 +25,8 @@ def Index():
     return render_template('index.html')
 
 
-@app.route('/procuctos')
-def productos():
+@app.route('/get_productos')
+def get_Products():
    # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
 
@@ -40,7 +40,13 @@ def productos():
         # close connection
     conn.close()
     # print(produtcs)
-    return render_template('products.html',products=produtcs)
+    return render_template('list_products.html',products=produtcs)
+
+@app.route('/productos')
+def add_products():
+    return render_template('products.html')
+
+
 
 @app.route('/proveedor_list')
 def proveedor_list():
@@ -97,7 +103,7 @@ def Add_Product():
         flash('Product Added successfully','success')
         
         # redireccionar al index                
-        return redirect(url_for('Index'))
+        return redirect(url_for('get_Products'))
 
 @app.route('/get_product_byId/<id>')
 def get_productByID(id):       
@@ -142,7 +148,7 @@ def Edit_Product(id):
         #  para enviar un mesaje al usuario
         flash('Product Edited successfully','success')
        
-    return redirect(url_for('productos'))
+    return redirect(url_for('get_Products'))
 
 @app.route('/delete_product/<id>')
 def Delete_Product(id):
@@ -162,7 +168,7 @@ def Delete_Product(id):
     #  para enviar un mesaje al usuario
     flash('Product Deleted successfully','success')
 
-    return redirect(url_for('Index'))
+    return redirect(url_for('get_Products'))
 
 # run the App
 if __name__ == '__main__':
