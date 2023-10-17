@@ -19,8 +19,14 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Devel0pment!'
 app.config['MYSQL_DB'] = 'products'
 
+
 @app.route('/')
 def Index():
+    return render_template('index.html')
+
+
+@app.route('/procuctos')
+def productos():
    # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
 
@@ -34,7 +40,7 @@ def Index():
         # close connection
     conn.close()
     # print(produtcs)
-    return render_template('index.html',products=produtcs)
+    return render_template('products.html',products=produtcs)
 
 @app.route('/proveedor_list')
 def proveedor_list():
@@ -136,7 +142,7 @@ def Edit_Product(id):
         #  para enviar un mesaje al usuario
         flash('Product Edited successfully','success')
        
-    return redirect(url_for('Index'))
+    return redirect(url_for('productos'))
 
 @app.route('/delete_product/<id>')
 def Delete_Product(id):
