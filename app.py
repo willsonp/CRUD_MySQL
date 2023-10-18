@@ -49,7 +49,7 @@ def Login():
             flash('Username or Password Not Found','Danger')
             return render_template('/auth/login.html')
     else:
-        flash('Username or Password Not Exists Registry','Danger')
+        flash('Username or Password Not Exists in Registry','Danger')
         return render_template('auth/login.html')
 
 
@@ -62,7 +62,7 @@ def Logout():
 
 
 @app.route('/get_productos')
-@login_required
+# @login_required
 def get_Products():
    # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
@@ -80,26 +80,26 @@ def get_Products():
     return render_template('list_products.html',products=produtcs)
 
 @app.route('/productos')
-@login_required
+# @login_required
 def add_products():
     return render_template('products.html')
 
 
 
 @app.route('/proveedor_list')
-@login_required
+# @login_required
 def proveedor_list():
     return render_template('proveedorlist.html')
 
 
 @app.route('/add_proveedor')
-@login_required
+# @login_required
 def add_proveedor():
     return render_template('proveedor.html')
 
 
 @app.route('/add_product',methods=['POST','GET'])
-@login_required
+# @login_required
 def Add_Product():
     if request.method == 'POST':
         descrip=request.form['descrip']
@@ -132,7 +132,7 @@ def Add_Product():
         return redirect(url_for('get_Products'))
 
 @app.route('/get_product_byId/<id>')
-@login_required
+# @login_required
 def get_productByID(id):       
     # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
@@ -151,7 +151,7 @@ def get_productByID(id):
     return render_template('edit_product.html',product=produtc_byId[0])
 
 @app.route('/edit_product/<id>',methods=['POST','GET'])
-@login_required
+# @login_required
 def Edit_Product(id):
     if request.method == 'POST':
         descrip=request.form['descrip']
@@ -179,7 +179,7 @@ def Edit_Product(id):
     return redirect(url_for('get_Products'))
 
 @app.route('/delete_product/<id>')
-@login_required
+# @login_required
 def Delete_Product(id):
     # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])

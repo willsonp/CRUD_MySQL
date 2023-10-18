@@ -10,7 +10,7 @@ class ModelUser():
             row = cursor.fetchone()
             cursor.close()
             if row != None:
-                user = Users(row[0],row[1],row[2],Users.check_password(row[2],user.password))
+                user = Users(row[0],row[1],Users.check_password(row[2],user.password))
                 print(user)
                 return user
             else:

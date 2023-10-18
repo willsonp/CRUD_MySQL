@@ -8,6 +8,7 @@
 
 
 <!-- Formulario -->
+<div class="container p-4">
 <div class="row justify-content-md-center p-4 ">
     <div class="col-md-5 p-4">
         
@@ -42,46 +43,8 @@
             </form>
         </div>
     </div>
-    <!-- Tabla -->
-    
-    <!-- <div class="col-md-7 p-4">
-        <table class="table table-striped table-bordered bg-white table-sm">
-            <thead>
-                <tr>
-                    <th>ProdutcID</th>
-                    <th>Description</th>
-                    <th>$ Costo</th>
-                    <th>$ Precio</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for product in products %}
-                <tr>
-                    <td>{{ product.0 }}</td>
-                    <td>{{ product.1 }}</td>
-                    <td>{{ product.2 }}</td>
-                    <td>{{ product.3 }}</td>
-                    <td class="d-grid gap-2 d-md-flex justify-content-md-center ">
-                        <a href="/get_product_byId/{{ product.0 }}" class="btn btn-info btn-sm mx-auto">Edit</a>
-                        <a href="/delete_product/{{ product.0 }}" class="btn btn-danger btn-sm mx-auto">Delete</a>
-                    </td>
-                </tr>
-                {% endfor %}
-
-            </tbody>
-        </table>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </nav>
-    </div> -->
-
+</div>
+   
 </div>
 
 {% endblock %}
