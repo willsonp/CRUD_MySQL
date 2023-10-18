@@ -1,5 +1,6 @@
 from flask import Flask,render_template, request, redirect, url_for, flash
 import MySQLdb.cursors
+from  flask_login import LoginManager, login_required, login_user, logout_user, current_user
 # Models
 from models.modeluser import ModelUser
 # Entities
@@ -8,12 +9,21 @@ from models.entities.users import Users
 app = Flask(__name__)
 
 app.secret_key='mysecretkey'
+# para manejar sesiones
+login_manager_app = LoginManager(app)
 # Config MySQL DB
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Devel0pment!'
 app.config['MYSQL_DB'] = 'products'
+
+
+@login_manager_app.user_loader
+def load_user(id):
+    conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+    return ModelUser.get_id(conn,id)
+
 
 @app.route('/home')
 def Home():
@@ -40,9 +50,10 @@ def Login():
         conn.close()
         
         if logged_user != None:
-           if(logged_user):                
+           if(logged_user.password):    
+                login_user(logged_user) 
                 flash('Welconme youre Logged In','Success')   
-                return render_template('layout.html')
+                return redirect(url_for('Home'))
            else:
                 flash('Invalid Password','Danger')   
                 return render_template('/auth/login.html')            
@@ -55,15 +66,15 @@ def Login():
 
 
 @app.route('/logout')
-# @login_required
+@login_required
 def Logout():
-    
-    return redirect(url_for('login'))
+    logout_user()    
+    return redirect(url_for('Login'))
 
 
 
 @app.route('/get_productos')
-# @login_required
+@login_required
 def get_Products():
    # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
@@ -88,7 +99,7 @@ def add_products():
 
 
 @app.route('/proveedor_list')
-# @login_required
+@login_required
 def proveedor_list():
     return render_template('proveedorlist.html')
 
@@ -100,7 +111,7 @@ def add_proveedor():
 
 
 @app.route('/add_product',methods=['POST','GET'])
-# @login_required
+@login_required
 def Add_Product():
     if request.method == 'POST':
         descrip=request.form['descrip']
@@ -133,7 +144,7 @@ def Add_Product():
         return redirect(url_for('get_Products'))
 
 @app.route('/get_product_byId/<id>')
-# @login_required
+@login_required
 def get_productByID(id):       
     # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
@@ -152,7 +163,7 @@ def get_productByID(id):
     return render_template('edit_product.html',product=produtc_byId[0])
 
 @app.route('/edit_product/<id>',methods=['POST','GET'])
-# @login_required
+@login_required
 def Edit_Product(id):
     if request.method == 'POST':
         descrip=request.form['descrip']
@@ -180,7 +191,7 @@ def Edit_Product(id):
     return redirect(url_for('get_Products'))
 
 @app.route('/delete_product/<id>')
-# @login_required
+@login_required
 def Delete_Product(id):
     # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
@@ -200,7 +211,30 @@ def Delete_Product(id):
 
     return redirect(url_for('get_Products'))
 
+
+# controlar errores
+@app.errorhandler(401)
+def no_loged(e):
+    flash('You must be logged in to view this page.','Danger')
+    return redirect(url_for('Login'))
+
+@app.errorhandler(403)
+def denegado(e):
+    return '<h1>Servidor ha denegado su Entrada, Verificar con el Administrador</h1>',403
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return '<h1>Pagina No Encontrada</h1>',404
+
+@app.errorhandler(500)
+def missingSvr(e):
+    return '<h1>Servidor NO Disponible</h1>',500
+
 # run the App
 if __name__ == '__main__':
     # app.config.from_object(config['development'])
+    app.register_error_handler(401,no_loged)    
+    app.register_error_handler(403,denegado)  
+    app.register_error_handler(404,page_not_found)
+    app.register_error_handler(500,missingSvr)
     app.run(port=3000,debug=True)
