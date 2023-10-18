@@ -1,6 +1,5 @@
 from flask import Flask,render_template, request, redirect, url_for, flash
 import MySQLdb.cursors
-from flask_login import  login_user, logout_user, login_required,login_manager
 # Models
 from models.modeluser import ModelUser
 # Entities
@@ -16,6 +15,9 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Devel0pment!'
 app.config['MYSQL_DB'] = 'products'
 
+@app.route('/home')
+def Home():
+    return render_template('layout.html')
 
 @app.route('/')
 def Index():
@@ -38,8 +40,7 @@ def Login():
         conn.close()
         
         if logged_user != None:
-           if(logged_user.password):
-                login_user(logged_user)
+           if(logged_user):                
                 flash('Welconme youre Logged In','Success')   
                 return render_template('layout.html')
            else:
@@ -54,9 +55,9 @@ def Login():
 
 
 @app.route('/logout')
-@login_required
+# @login_required
 def Logout():
-    logout_user()
+    
     return redirect(url_for('login'))
 
 
