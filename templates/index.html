@@ -1,8 +1,38 @@
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}
-<title> Sistema de Gestion Administrativa (SGA) </title>
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block body %}
-{% endblock %}
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/menu.css">    
+    <link rel="stylesheet" href="/static/css/login.css">
+
+    {% block title %}
+    <title> Sistema de Gestion Administrativa (SGA) </title>
+    {% endblock %}
+
+</head>
+
+<body>
+
+        <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/">SGA System</a>
+            <div class="navbar-nav">
+              <div class="nav-item text-nowrap">
+                <a class="nav-link px-3" href="/login">Sign In</a>
+              </div>
+            </div>
+          </header>
+         
+                  {% block body %}
+                {% endblock %}
+   
+      <script src="/static/js/bootstrapMain.js"></script>
+      <script src="/static/js/bootstrapBundle.js"></script>     
+      <script src="/static/js/feather.min.js"></script>
+
+</body>
+
+</html>

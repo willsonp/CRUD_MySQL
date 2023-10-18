@@ -1,16 +1,13 @@
 from flask import Flask,render_template, request, redirect, url_for, flash
 import MySQLdb.cursors
-# from config import config
-# from models.modeluser import ModelUser
-# from models.entities.user import User
-
+from flask_login import  login_user, logout_user, login_required,login_manager
 # Models
-
+from models.modeluser import ModelUser
 # Entities
-
-
+from models.entities.users import Users
 
 app = Flask(__name__)
+
 app.secret_key='mysecretkey'
 # Config MySQL DB
 app.config['MYSQL_HOST'] = 'localhost'
@@ -24,8 +21,48 @@ app.config['MYSQL_DB'] = 'products'
 def Index():
     return render_template('index.html')
 
+@app.route('/login',methods=['POST','GET'])
+def Login():
+    if request.method == 'POST':
+       
+        conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+
+        user = Users(0,request.form['username'],request.form['password'])
+        # print(request.form['username'],request.form['password'])
+        # print(user.username,user.password)
+
+        logged_user = ModelUser.login(conn,user)
+        
+        # print(logged_user)
+
+        conn.close()
+        
+        if logged_user != None:
+           if(logged_user.password):
+                login_user(logged_user)
+                flash('Welconme youre Logged In','Success')   
+                return render_template('layout.html')
+           else:
+                flash('Invalid Password','Danger')   
+                return render_template('/auth/login.html')            
+        else:
+            flash('Username or Password Not Found','Danger')
+            return render_template('/auth/login.html')
+    else:
+        flash('Username or Password Not Exists Registry','Danger')
+        return render_template('auth/login.html')
+
+
+@app.route('/logout')
+@login_required
+def Logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
 
 @app.route('/get_productos')
+@login_required
 def get_Products():
    # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
@@ -43,38 +80,26 @@ def get_Products():
     return render_template('list_products.html',products=produtcs)
 
 @app.route('/productos')
+@login_required
 def add_products():
     return render_template('products.html')
 
 
 
 @app.route('/proveedor_list')
+@login_required
 def proveedor_list():
     return render_template('proveedorlist.html')
 
 
 @app.route('/add_proveedor')
+@login_required
 def add_proveedor():
     return render_template('proveedor.html')
 
-@app.route('/login',methods=['POST','GET'])
-def Login():
-    if request.method == 'POST':
-        # user = User(0,request.form['username'],request.form['password'])
-        print(request.form['username'],request.form['password'])
-        # logged_user = ModelUser.login(conn,user)
-        
-        # if logged_user:
-        #     return redirect(url_for('Index'))
-        # else:
-        #     flash('Username or Password incorrect','danger')
-
-        return render_template('/auth/login.html')
-    else:
-        return render_template('auth/login.html')
-
 
 @app.route('/add_product',methods=['POST','GET'])
+@login_required
 def Add_Product():
     if request.method == 'POST':
         descrip=request.form['descrip']
@@ -107,6 +132,7 @@ def Add_Product():
         return redirect(url_for('get_Products'))
 
 @app.route('/get_product_byId/<id>')
+@login_required
 def get_productByID(id):       
     # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
@@ -125,6 +151,7 @@ def get_productByID(id):
     return render_template('edit_product.html',product=produtc_byId[0])
 
 @app.route('/edit_product/<id>',methods=['POST','GET'])
+@login_required
 def Edit_Product(id):
     if request.method == 'POST':
         descrip=request.form['descrip']
@@ -152,6 +179,7 @@ def Edit_Product(id):
     return redirect(url_for('get_Products'))
 
 @app.route('/delete_product/<id>')
+@login_required
 def Delete_Product(id):
     # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
