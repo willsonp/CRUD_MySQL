@@ -11,7 +11,7 @@ app = Flask(__name__)
 # para cifrar los formularios generar Token
 csrf=CSRFProtect(app)
 
-app.secret_key='mysecretkey'
+app.secret_key='tMUHQ$1rvpUg5Lh'
 # para manejar sesiones
 login_manager_app = LoginManager(app)
 # Config MySQL DB
@@ -238,7 +238,7 @@ def missingSvr(e):
 
 # run the App
 if __name__ == '__main__':
-    # usamos o inicializamos el token
+    # usamos o inicializamos el token    
     csrf.init_app(app)
     # para alcanxar los errores generados
     app.register_error_handler(401,no_loged)    
