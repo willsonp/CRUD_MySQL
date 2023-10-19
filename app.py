@@ -1,12 +1,15 @@
 from flask import Flask,render_template, request, redirect, url_for, flash
 import MySQLdb.cursors
-from  flask_login import LoginManager, login_required, login_user, logout_user, current_user
+from  flask_login import LoginManager, login_required, login_user, logout_user
+from flask_wtf import CSRFProtect
 # Models
 from models.modeluser import ModelUser
 # Entities
 from models.entities.users import Users
 
 app = Flask(__name__)
+# para cifrar los formularios generar Token
+csrf=CSRFProtect(app)
 
 app.secret_key='mysecretkey'
 # para manejar sesiones
@@ -26,6 +29,7 @@ def load_user(id):
 
 
 @app.route('/home')
+@login_required
 def Home():
     return render_template('layout.html')
 
@@ -52,23 +56,25 @@ def Login():
         if logged_user != None:
            if(logged_user.password):    
                 login_user(logged_user) 
+                print(logged_user.username)
                 flash('Welconme youre Logged In','Success')   
                 return redirect(url_for('Home'))
            else:
                 flash('Invalid Password','Danger')   
                 return render_template('/auth/login.html')            
         else:
-            flash('Username or Password Not Found','Danger')
+            flash('Username Not Found','Danger')
             return render_template('/auth/login.html')
     else:
-        flash('Username or Password Not Exists in Registry','Danger')
+        flash('Username and  Password Does not Exists in the Registry','Danger')
         return render_template('auth/login.html')
 
 
 @app.route('/logout')
 @login_required
 def Logout():
-    logout_user()    
+    logout_user()   
+    flash('You must be logged in to view this page.','Danger')
     return redirect(url_for('Login'))
 
 
@@ -92,7 +98,7 @@ def get_Products():
     return render_template('list_products.html',products=produtcs)
 
 @app.route('/productos')
-# @login_required
+@login_required
 def add_products():
     return render_template('products.html')
 
@@ -105,7 +111,7 @@ def proveedor_list():
 
 
 @app.route('/add_proveedor')
-# @login_required
+@login_required
 def add_proveedor():
     return render_template('proveedor.html')
 
@@ -232,9 +238,12 @@ def missingSvr(e):
 
 # run the App
 if __name__ == '__main__':
-    # app.config.from_object(config['development'])
+    # usamos o inicializamos el token
+    csrf.init_app(app)
+    # para alcanxar los errores generados
     app.register_error_handler(401,no_loged)    
     app.register_error_handler(403,denegado)  
     app.register_error_handler(404,page_not_found)
     app.register_error_handler(500,missingSvr)
+    # Iniciamos la Aplicacion
     app.run(port=3000,debug=True)

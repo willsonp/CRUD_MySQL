@@ -35,6 +35,7 @@
             <h1 class="h3 mb-3 fw-normal text-center">Please sign in</h1>
 
             <div class="form-floating me-2 my-2 mx-2">
+              <input type="text" hidden name="csrf_token" value="{{csrf_token() }}" 
               <input type="text" class="form-control" name="username" placeholder="name@example.com">
               <label for="floatingInput">Email or User Name</label>
             </div>
