@@ -77,8 +77,8 @@ def Login():
 @login_required
 def Logout():
     logout_user()   
-    flash('You must be logged in to view this page.','Danger')
-    return redirect(url_for('Login'))
+    # flash('You must be logged in to view this page.','Danger')
+    return redirect(url_for('Index'))
 
 
 
