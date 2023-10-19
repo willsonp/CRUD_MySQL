@@ -1,5 +1,6 @@
 class Config():
-    SECRET_KEY='Devel0pment!'
+    SECRET_KEY='tMUHQ$1rvpUg5Lh'
+    WTF_CSRF_SECRET_KEY='tMUHQ$1rvpUg5Lh'
 
 class DevConfig(Config):
     DEBUG=True

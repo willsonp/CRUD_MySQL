@@ -2,6 +2,8 @@ from flask import Flask,render_template, request, redirect, url_for, flash
 import MySQLdb.cursors
 from flask_wtf.csrf import CSRFProtect
 from  flask_login import LoginManager, login_required, login_user, logout_user
+
+from config import config
 # Models
 from models.modeluser import ModelUser
 # Entities
@@ -11,7 +13,7 @@ app = Flask(__name__)
 # para cifrar los formularios generar Token
 csrf=CSRFProtect(app)
 
-app.secret_key='tMUHQ$1rvpUg5Lh'
+# app.secret_key='tMUHQ$1rvpUg5Lh'
 # para manejar sesiones
 login_manager_app = LoginManager(app)
 # Config MySQL DB
@@ -30,6 +32,7 @@ def load_user(id):
 
 @app.route('/home')
 @login_required
+@csrf.exempt # para que no valide el token
 def Home():
     return render_template('layout.html')
 
@@ -56,7 +59,7 @@ def Login():
         if logged_user != None:
            if(logged_user.password):    
                 login_user(logged_user) 
-                print(logged_user.username)
+                # print(logged_user.username)
                 flash('Welconme youre Logged In','Success')   
                 return redirect(url_for('Home'))
            else:
@@ -99,6 +102,7 @@ def get_Products():
 
 @app.route('/productos')
 @login_required
+@csrf.exempt # para que no valide el token
 def add_products():
     return render_template('products.html')
 
@@ -112,12 +116,14 @@ def proveedor_list():
 
 @app.route('/add_proveedor')
 @login_required
+@csrf.exempt # para que no valide el token
 def add_proveedor():
     return render_template('proveedor.html')
 
 
 @app.route('/add_product',methods=['POST','GET'])
 @login_required
+@csrf.exempt # para que no valide el token
 def Add_Product():
     if request.method == 'POST':
         descrip=request.form['descrip']
@@ -170,6 +176,7 @@ def get_productByID(id):
 
 @app.route('/edit_product/<id>',methods=['POST','GET'])
 @login_required
+@csrf.exempt # para que no valide el token
 def Edit_Product(id):
     if request.method == 'POST':
         descrip=request.form['descrip']
@@ -198,6 +205,7 @@ def Edit_Product(id):
 
 @app.route('/delete_product/<id>')
 @login_required
+@csrf.exempt # para que no valide el token
 def Delete_Product(id):
     # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
@@ -238,6 +246,7 @@ def missingSvr(e):
 
 # run the App
 if __name__ == '__main__':
+    app.config.from_object(config['development'])
     # usamos o inicializamos el token    
     csrf.init_app(app)
     # para alcanxar los errores generados
@@ -246,4 +255,4 @@ if __name__ == '__main__':
     app.register_error_handler(404,page_not_found)
     app.register_error_handler(500,missingSvr)
     # Iniciamos la Aplicacion
-    app.run(port=3000,debug=True)
+    app.run(port=3000)
