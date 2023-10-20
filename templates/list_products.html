@@ -32,7 +32,7 @@
                 <nav class="navbar navbar-light bg-light col-md-auto">
 
 
-                    <form class="form-inline col-4" action="/productos">
+                    <form class="form-inline col-4" action="/home/productos">
                         <input hidden name="instruccion" value="nuevo">
                         <button name="nuevo" class="btn btn-success my-2 mx-2 btn-lg" type="submit"><i
                                 class="fa fa-plus"></i>&nbsp;Agregar</button>
@@ -76,8 +76,8 @@
                             <td>{{ product.2 }}</td>
                             <td>{{ product.3 }}</td>
                             <td class="d-grid gap-2 d-md-flex justify-content-md-center ">
-                                <a href="/get_product_byId/{{ product.0 }}" class="btn btn-info btn-sm mx-auto">Editar</a>
-                                <a href="/delete_product/{{ product.0 }}" class="btn btn-danger btn-sm mx-auto">Borrar</a>
+                                <a href="/home/get_product_byId/{{ product.0 }}" class="btn btn-info btn-sm mx-auto">Editar</a>
+                                <a href="/home/delete_product/{{ product.0 }}" class="btn btn-danger btn-sm mx-auto">Borrar</a>
                             </td>
                         </tr>
                         {% endfor %}

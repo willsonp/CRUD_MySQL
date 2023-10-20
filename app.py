@@ -1,4 +1,4 @@
-from flask import Flask,render_template, request, redirect, url_for, flash
+from flask import Flask,render_template, request, redirect, url_for, flash,jsonify
 import MySQLdb.cursors
 from flask_wtf.csrf import CSRFProtect
 from  flask_login import LoginManager, login_required, login_user, logout_user
@@ -82,7 +82,7 @@ def Logout():
 
 
 
-@app.route('/get_productos')
+@app.route('/home/get_productos')
 @login_required
 def get_Products():
    # Open connection to MySQL DB
@@ -100,7 +100,7 @@ def get_Products():
     # print(produtcs)
     return render_template('list_products.html',products=produtcs)
 
-@app.route('/productos')
+@app.route('/home/productos')
 @login_required
 @csrf.exempt # para que no valide el token
 def add_products():
@@ -108,20 +108,20 @@ def add_products():
 
 
 
-@app.route('/proveedor_list')
+@app.route('/home/proveedor_list')
 @login_required
 def proveedor_list():
     return render_template('proveedorlist.html')
 
 
-@app.route('/add_proveedor')
+@app.route('/home/add_proveedor')
 @login_required
 @csrf.exempt # para que no valide el token
 def add_proveedor():
     return render_template('proveedor.html')
 
 
-@app.route('/add_product',methods=['POST','GET'])
+@app.route('/home/add_product',methods=['POST','GET'])
 @login_required
 @csrf.exempt # para que no valide el token
 def Add_Product():
@@ -155,7 +155,7 @@ def Add_Product():
         # redireccionar al index                
         return redirect(url_for('get_Products'))
 
-@app.route('/get_product_byId/<id>')
+@app.route('/home/get_product_byId/<id>')
 @login_required
 def get_productByID(id):       
     # Open connection to MySQL DB
@@ -174,7 +174,7 @@ def get_productByID(id):
     #  para enviar un mesaje al usuario
     return render_template('edit_product.html',product=produtc_byId[0])
 
-@app.route('/edit_product/<id>',methods=['POST','GET'])
+@app.route('/home/edit_product/<id>',methods=['POST','GET'])
 @login_required
 @csrf.exempt # para que no valide el token
 def Edit_Product(id):
@@ -203,7 +203,7 @@ def Edit_Product(id):
        
     return redirect(url_for('get_Products'))
 
-@app.route('/delete_product/<id>')
+@app.route('/home/delete_product/<id>')
 @login_required
 @csrf.exempt # para que no valide el token
 def Delete_Product(id):
@@ -243,6 +243,26 @@ def page_not_found(e):
 @app.errorhandler(500)
 def missingSvr(e):
     return '<h1>Servidor NO Disponible</h1>',500
+
+# ejemplo de jsonify para enviar datos a un cliente
+@app.route('/home/get_allproducts')
+@login_required
+def get_All_Products():
+   # Open connection to MySQL DB
+    conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+
+        # Create cursor
+    cursor = conn.cursor()
+        # pasamos los valres a Select       
+    cursor.execute('SELECT id, descripcion, costo, price  FROM productos WHERE status=%s','A')
+    produtcs=cursor.fetchall()
+        # cerramos cursor 
+    cursor.close()
+        # close connection
+    conn.close()
+    # print(produtcs)
+    return jsonify(produtcs)
+
 
 # run the App
 if __name__ == '__main__':
