@@ -255,4 +255,4 @@ if __name__ == '__main__':
     app.register_error_handler(404,page_not_found)
     app.register_error_handler(500,missingSvr)
     # Iniciamos la Aplicacion
-    app.run(port=3000)
+    app.run(port=app.config['PORT'],debug=app.config['DEBUG'])
