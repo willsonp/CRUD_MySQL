@@ -2,7 +2,7 @@ from flask import Flask,render_template, request, redirect, url_for, flash,jsoni
 import MySQLdb.cursors
 from flask_wtf.csrf import CSRFProtect
 from  flask_login import LoginManager, login_required, login_user, logout_user
-
+import json
 from config import config
 # Models
 from models.modeluser import ModelUser
@@ -246,7 +246,7 @@ def missingSvr(e):
 
 # ejemplo de jsonify para enviar datos a un cliente
 @app.route('/home/get_allproducts')
-@login_required
+# @login_required
 def get_All_Products():
    # Open connection to MySQL DB
     conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
@@ -255,13 +255,24 @@ def get_All_Products():
     cursor = conn.cursor()
         # pasamos los valres a Select       
     cursor.execute('SELECT id, descripcion, costo, price  FROM productos WHERE status=%s','A')
-    produtcs=cursor.fetchall()
+    
+    # produtcs=cursor.fetchall()
+    row_headers=[x[0] for x in cursor.description] #this will extract row headers
+    rvalue = cursor.fetchall() 
+
+    json_data=[]
+    for result in rvalue:
+        json_data.append(dict(zip(row_headers,result)))
+    
         # cerramos cursor 
     cursor.close()
         # close connection
     conn.close()
     # print(produtcs)
-    return jsonify(produtcs)
+    
+    return json.dumps(json_data)
+
+    # return jsonify(produtcs)
 
 
 # run the App
