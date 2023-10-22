@@ -6,7 +6,7 @@ class ModelUser():
         try:
           # Open connection to MySQL DB
             cursor = db.cursor()
-            cursor.execute('SELECT id,username,password,name FROM users WHERE username = %s', (user.username,))
+            cursor.execute('SELECT id,username,password,fullname FROM users WHERE username = %s', (user.username,))
             row = cursor.fetchone()
             cursor.close()
             if row != None:
@@ -24,7 +24,7 @@ class ModelUser():
         try:
         # Open connection to MySQL DB
             cursor = db.cursor()
-            cursor.execute('SELECT id,username,password,name FROM users WHERE id = %s', (id,))
+            cursor.execute('SELECT id,username,password,fullname FROM users WHERE id = %s', (id,))
             row = cursor.fetchone()
             cursor.close()
             if row != None:

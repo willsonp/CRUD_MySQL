@@ -17,11 +17,12 @@ csrf=CSRFProtect(app)
 # para manejar sesiones
 login_manager_app = LoginManager(app)
 # Config MySQL DB
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_PORT'] = 3306
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Devel0pment!'
-app.config['MYSQL_DB'] = 'products'
+# app.config['MYSQL_HOST'] = 'localhost'
+# app.config['MYSQL_PORT'] = 3306
+# app.config['MYSQL_USER'] = 'root'
+# app.config['MYSQL_PASSWORD'] = 'Devel0pment!'
+# app.config['MYSQL_DB'] = 'products'
+
 
 
 @login_manager_app.user_loader

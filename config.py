@@ -8,7 +8,7 @@ class DevConfig(Config):
     MYSQL_HOST='localhost'
     MYSQL_USER='root'
     MYSQL_PASSWORD='Devel0pment!'
-    MYSQL_DB='products'
+    MYSQL_DB='puntoventa_python'
     MYSQL_PORT=3306    
 
 config = {
