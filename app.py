@@ -1,5 +1,5 @@
-from flask import Flask,render_template, request, redirect, url_for, flash,jsonify
-import MySQLdb.cursors
+from flask import Flask,render_template, request, redirect, url_for, flash
+# import MySQLdb.cursors
 from flask_wtf.csrf import CSRFProtect
 from  flask_login import LoginManager, login_required, login_user, logout_user
 import json
@@ -27,7 +27,8 @@ login_manager_app = LoginManager(app)
 
 @login_manager_app.user_loader
 def load_user(id):
-    conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+    # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+    conn=config['conexion'].get_connection()
     return ModelUser.get_id(conn,id)
 
 
@@ -45,8 +46,10 @@ def Index():
 def Login():
     if request.method == 'POST':
        
-        conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
-
+        # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+        
+        conn=config['conexion'].get_connection()
+        
         user = Users(0,request.form['username'],request.form['password'])
         # print(request.form['username'],request.form['password'])
         # print(user.username,user.password)
@@ -87,8 +90,9 @@ def Logout():
 @login_required
 def get_Products():
    # Open connection to MySQL DB
-    conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+    # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
 
+    conn=config['conexion'].get_connection()
         # Create cursor
     cursor = conn.cursor()
         # pasamos los valres a Select       
@@ -133,11 +137,11 @@ def Add_Product():
         
         
         # Connect to MySQL database
-        conn = MySQLdb.connect(host=app.config['MYSQL_HOST'],
-                               user=app.config['MYSQL_USER'],
-                               password=app.config['MYSQL_PASSWORD'],
-                               db=app.config['MYSQL_DB'])
-
+        # conn = MySQLdb.connect(host=app.config['MYSQL_HOST'],
+        #                        user=app.config['MYSQL_USER'],
+        #                        password=app.config['MYSQL_PASSWORD'],
+        #                        db=app.config['MYSQL_DB'])
+        conn=config['conexion'].get_connection()
         # Create cursor
         cursor = conn.cursor()
 
@@ -160,8 +164,8 @@ def Add_Product():
 @login_required
 def get_productByID(id):       
     # Open connection to MySQL DB
-    conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
-
+    # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+    conn=config['conexion'].get_connection()
     # Create cursor
     cursor = conn.cursor()
     # pasamos los valres a Select NOTA: el id debe ser una tupla       
@@ -187,8 +191,9 @@ def Edit_Product(id):
         # print(descrip,price,cost,id)
 
         # Open connection to MySQL DB
-        conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
-
+        # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+        
+        conn=config['conexion'].get_connection()
         # Create cursor
         cursor = conn.cursor()
         # pasamos los valres a Select       
@@ -209,8 +214,8 @@ def Edit_Product(id):
 @csrf.exempt # para que no valide el token
 def Delete_Product(id):
     # Open connection to MySQL DB
-    conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
-
+    # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+    conn=config['conexion'].get_connection()
     # Create cursor
     cursor = conn.cursor()
     # pasamos los valres a Select       
@@ -250,7 +255,9 @@ def missingSvr(e):
 # @login_required
 def get_All_Products():
    # Open connection to MySQL DB
-    conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+    # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+
+    conn=config['conexion'].get_connection()
 
         # Create cursor
     cursor = conn.cursor()
