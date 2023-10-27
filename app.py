@@ -28,6 +28,7 @@ login_manager_app = LoginManager(app)
 @login_manager_app.user_loader
 def load_user(id):
     # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+    # instanciamos la conexion
     conn=config['conexion'].get_connection()
     return ModelUser.get_id(conn,id)
 
@@ -47,7 +48,8 @@ def Login():
     if request.method == 'POST':
        
         # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
-        
+
+        # instanciamos la conexion
         conn=config['conexion'].get_connection()
         
         user = Users(0,request.form['username'],request.form['password'])
@@ -92,6 +94,7 @@ def get_Products():
    # Open connection to MySQL DB
     # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
 
+    # instanciamos la conexion
     conn=config['conexion'].get_connection()
         # Create cursor
     cursor = conn.cursor()
@@ -141,6 +144,7 @@ def Add_Product():
         #                        user=app.config['MYSQL_USER'],
         #                        password=app.config['MYSQL_PASSWORD'],
         #                        db=app.config['MYSQL_DB'])
+        # instanciamos la conexion
         conn=config['conexion'].get_connection()
         # Create cursor
         cursor = conn.cursor()
@@ -165,6 +169,7 @@ def Add_Product():
 def get_productByID(id):       
     # Open connection to MySQL DB
     # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+    # instanciamos la conexion
     conn=config['conexion'].get_connection()
     # Create cursor
     cursor = conn.cursor()
@@ -193,6 +198,7 @@ def Edit_Product(id):
         # Open connection to MySQL DB
         # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
         
+        # instanciamos la conexion
         conn=config['conexion'].get_connection()
         # Create cursor
         cursor = conn.cursor()
@@ -215,6 +221,7 @@ def Edit_Product(id):
 def Delete_Product(id):
     # Open connection to MySQL DB
     # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
+    # instanciamos la conexion
     conn=config['conexion'].get_connection()
     # Create cursor
     cursor = conn.cursor()
@@ -256,7 +263,8 @@ def missingSvr(e):
 def get_All_Products():
    # Open connection to MySQL DB
     # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
-
+    
+    # instanciamos la conexion
     conn=config['conexion'].get_connection()
 
         # Create cursor
