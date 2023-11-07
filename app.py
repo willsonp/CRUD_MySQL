@@ -36,8 +36,8 @@ def load_user(id):
 @app.route('/home')
 @login_required
 @csrf.exempt # para que no valide el token
-def Home():
-    return render_template('layout.html')
+def Home(menu=None):
+    return render_template('layout.html',menu=menu)
 
 @app.route('/')
 def Index():
@@ -73,19 +73,26 @@ def Login():
                 conn=config['conexion'].get_connection()
                 
                 cursor = conn.cursor()
-                result = cursor.callproc('mostrar_menuprincipal',[(1,)])
-                # result = cursor.stored_results()
-                print(result)
+                
+                result = cursor.execute('call mostrar_menuprincipal(%s)',[(logged_user.id,)])
+                
+                # extract row headers
+                row_headers=[x[0] for x in cursor.description] #this will 
+
+                result = cursor.fetchall()                
+                
+                # # print(result)
+                menu_json=[]
                 
                 for rs in result:
                     print(rs)
-                # imprimimos las informaciones del procedimiento almacenado
-                
+                    menu_json.append(dict(zip(row_headers,result)))
+               
                 cursor.close()
 
                 conn.close()            
-
-                return redirect(url_for('Home'))
+                # json.dumps(json_data)
+                return redirect(url_for('Home',menus=json.dumps(menu_json)))
            else:
                 flash('Invalid Password','Danger')   
                 return render_template('/auth/login.html')            
