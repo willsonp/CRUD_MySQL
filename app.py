@@ -67,6 +67,24 @@ def Login():
                 login_user(logged_user) 
                 # print(logged_user.username)
                 flash('Welconme youre Logged In','Success')   
+
+                # llamamos el procedimiento almacenado
+                # instanciamos la conexion
+                conn=config['conexion'].get_connection()
+                
+                cursor = conn.cursor()
+                result = cursor.callproc('mostrar_menuprincipal',[(1,)])
+                # result = cursor.stored_results()
+                print(result)
+                
+                for rs in result:
+                    print(rs)
+                # imprimimos las informaciones del procedimiento almacenado
+                
+                cursor.close()
+
+                conn.close()            
+
                 return redirect(url_for('Home'))
            else:
                 flash('Invalid Password','Danger')   
@@ -74,6 +92,8 @@ def Login():
         else:
             flash('Username Not Found','Danger')
             return render_template('/auth/login.html')
+        # Cerramos la conexion
+        
     else:
         flash('Username and  Password Does not Exists in the Registry','Danger')
         return render_template('auth/login.html')
