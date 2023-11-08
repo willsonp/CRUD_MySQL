@@ -36,8 +36,8 @@ def load_user(id):
 @app.route('/home')
 @login_required
 @csrf.exempt # para que no valide el token
-def Home(menu=None):
-    return render_template('layout.html',menu=menu)
+def Home(opcionesMenu=None):
+    return render_template('layout.html',opcionesMenu=opcionesMenu)
 
 @app.route('/')
 def Index():
@@ -92,8 +92,8 @@ def Login():
 
                 # conn.close()            
                 # json.dumps(json_data)
-                # return redirect(url_for('Home',menus=json.dumps(menu_json)))
-                return redirect(url_for('Home'))
+                return redirect(url_for('Home',opcionesMenu=get_Menu(logged_user.id)))
+                # return redirect(url_for('Home'))
            else:
                 flash('Invalid Password','Danger')   
                 return render_template('/auth/login.html')            
@@ -286,7 +286,7 @@ def missingSvr(e):
     return '<h1>Servidor NO Disponible</h1>',500
 
 # ejemplo de jsonify para enviar datos a un cliente
-@app.route('/home/get_menu/<id>')
+# @app.route('/home/get_menu/<id>')
 # @login_required
 def get_Menu(id):
    # Open connection to MySQL DB
