@@ -70,29 +70,30 @@ def Login():
 
                 # llamamos el procedimiento almacenado
                 # instanciamos la conexion
-                conn=config['conexion'].get_connection()
+                # conn=config['conexion'].get_connection()
                 
-                cursor = conn.cursor()
+                # cursor = conn.cursor()
                 
-                result = cursor.execute('call mostrar_menuprincipal(%s)',[(logged_user.id,)])
+                # result = cursor.execute('call mostrar_menuprincipal(%s)',[(logged_user.id,)])
                 
                 # extract row headers
-                row_headers=[x[0] for x in cursor.description] #this will 
+                # row_headers=[x[0] for x in cursor.description] #this will 
 
-                result = cursor.fetchall()                
+                # result = cursor.fetchall()                
                 
                 # # print(result)
-                menu_json=[]
+                # menu_json=[]
                 
-                for rs in result:
-                    print(rs)
-                    menu_json.append(dict(zip(row_headers,result)))
+                # for rs in result:
+                #     print(rs)
+                #     menu_json.append(dict(zip(row_headers,result)))
                
-                cursor.close()
+                # cursor.close()
 
-                conn.close()            
+                # conn.close()            
                 # json.dumps(json_data)
-                return redirect(url_for('Home',menus=json.dumps(menu_json)))
+                # return redirect(url_for('Home',menus=json.dumps(menu_json)))
+                return redirect(url_for('Home'))
            else:
                 flash('Invalid Password','Danger')   
                 return render_template('/auth/login.html')            
@@ -285,9 +286,9 @@ def missingSvr(e):
     return '<h1>Servidor NO Disponible</h1>',500
 
 # ejemplo de jsonify para enviar datos a un cliente
-@app.route('/home/get_allproducts')
+@app.route('/home/get_menu/<id>')
 # @login_required
-def get_All_Products():
+def get_Menu(id):
    # Open connection to MySQL DB
     # conn=MySQLdb.connect(host=app.config['MYSQL_HOST'],user=app.config['MYSQL_USER'],password=app.config['MYSQL_PASSWORD'],db=app.config['MYSQL_DB'])
     
@@ -297,8 +298,9 @@ def get_All_Products():
         # Create cursor
     cursor = conn.cursor()
         # pasamos los valres a Select       
-    cursor.execute('SELECT id, descripcion, costo, price  FROM productos WHERE status=%s','A')
+    # cursor.execute('SELECT id, descripcion, costo, price  FROM productos WHERE status=%s','A')
     
+    result = cursor.execute('call mostrar_menuprincipal(%s)',[(id,)])
     # produtcs=cursor.fetchall()
     row_headers=[x[0] for x in cursor.description] #this will extract row headers
     rvalue = cursor.fetchall() 
