@@ -33,7 +33,7 @@ def load_user(id):
     return ModelUser.get_id(conn,id)
 
 
-@app.route('/home')
+@app.route('/home',methods=['POST','GET'])
 @login_required
 @csrf.exempt # para que no valide el token
 def Home(opcionesMenu=None):
