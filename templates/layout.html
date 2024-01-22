@@ -5,10 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link href="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.css" rel="stylesheet">
   <!-- CSS para Bootstrap 5.2 -->
   <link rel="stylesheet" href="/static/css/bootstrap.css">
   <link rel="stylesheet" href="/static/css/menu.css">
   <link rel="stylesheet" href="/static/css/login.css">
+
+  
 
   {% block title %}
   <title> Sistema de Gestion Administrativa (SGA) </title>
@@ -165,10 +168,37 @@
       </main>
     </div>
   </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  
+  <script src="https://cdn.datatables.net/v/bs5/dt-1.13.8/datatables.min.js"></script>
+  <!-- asociar el objeto table a filtroy busquedas, poner la tabla que filtre y la colunma de los botones quitarle filtro  -->
+  <script>
+      $(document).ready(function() {
+          $('#produtcs-table').DataTable({
+              "aoColumnDefs": [{ 
+                  "bSortable": false,
+                  "aTargets": [-1]}
+                  ]});
+      } );
+
+      $(document).ready(function() {
+          $('#proveedor-table').DataTable({
+              "aoColumnDefs": [{ 
+                  "bSortable": false,
+                  "aTargets": [-1]}
+                  ]});
+      } );
+  </script>  
+  
   <!-- Scripts para Bootstrap 5.2 -->
   <script src="/static/js/bootstrapMain.js"></script>
   <script src="/static/js/bootstrapBundle.js"></script>
   <script src="/static/js/feather.min.js"></script>
+
+
 
 </body>
 
