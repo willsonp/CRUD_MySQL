@@ -12,3 +12,6 @@ def capt_video():
             break
     vid.release()    
     cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    capt_video()
