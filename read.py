@@ -1,6 +1,6 @@
 import cv2
 
-if __name__ == '__main__':
+def capt_video():
     vid = cv2.videoCapture(0)
     cv2.imshow('Video', vid)
     while True:
